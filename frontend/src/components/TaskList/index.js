@@ -1,18 +1,30 @@
 import './styles.css';
 
-function TaskList(){
-    return (
-        <div>
-            <ul className="list-tasks">
-              <li className="list-item">
-                <span>Tarefa 1</span>
-                
-              </li>
-              <button>Deletar</button>
-                <button>Editar</button>
-            </ul>
-          </div>
-    );
+import Task from '../Task'
+
+
+function TaskList() {
+  let tasks = [
+    {
+      id: 1,
+      description: "Aprender NodeJs"
+    },
+    {
+      id: 2,
+      description: "Aprender Spring Framework"
+    }
+  ]
+
+  return (
+    <div>
+      <ul className="list-tasks">
+        {tasks.map(task => (
+          <Task task={task} key={task.id}/>
+        ))
+        }
+      </ul>
+    </div>
+  );
 }
 
 export default TaskList;
