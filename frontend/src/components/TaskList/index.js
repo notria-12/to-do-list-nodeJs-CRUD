@@ -1,28 +1,39 @@
 import './styles.css';
-
+import api from '../../service/api'
 import Task from '../Task'
+import React, { useEffect, useState } from 'react';
 
 
 function TaskList() {
-  let tasks = [
-    {
-      id: 1,
-      description: "Aprender NodeJs"
-    },
-    {
-      id: 2,
-      description: "Aprender Spring Framework"
+  const [tasks, setTasks] = useState([]);
+  
+  useEffect( () => {
+    async function getTasks(){
+      
+      try {
+        const { data } = await api.get('/');
+        console.log("Tasks: ", data)
+        setTasks(data);
+      } catch (error) {
+        console.log('Ocorreu um erro inesperado' + error);
+      }
     }
-  ]
+    getTasks();
+  }, []);
+
+  console.log(tasks)
 
   return (
     <div>
-      <ul className="list-tasks">
+      {
+        tasks.length ? (<ul className="list-tasks">
         {tasks.map(task => (
           <Task task={task} key={task.id}/>
         ))
         }
-      </ul>
+      </ul>): ( <div className="no-tasks">Não existe tarefas </div>)
+      }
+      
     </div>
   );
 }
