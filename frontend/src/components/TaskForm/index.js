@@ -1,9 +1,11 @@
-import { useState } from 'react';
-import api from '../../service/api';
+import React, { useState, useContext } from 'react';
 import './styles.css';
+import { TaskContext} from "../../context/TaskContext";
 
 
 function TaskForm() {
+    const {addTask, clearList } = useContext(TaskContext);
+
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
@@ -20,14 +22,14 @@ function TaskForm() {
     const handleSubmit = async (event) => {
         event.preventDefault()
 
-        try {
-            await api.post('/', {
-                title,
-                description
-            });
-        } catch (error) {
-            console.log('Ocorreu um erro ao adicionar um regisrto' + error);
-        }
+       await addTask(title, description);
+        setTitle('');
+        setDescription('');
+    }
+
+    const handleClearList = (event) =>{
+        event.preventDefault();
+        clearList()
     }
 
 
@@ -48,7 +50,7 @@ function TaskForm() {
 
             <div className="buttons">
                 <button type="submit" className="btn add-task-btn">Adicionar</button>
-                <button className="btn clear-btn">Limpar</button>
+                <button className="btn clear-btn" onClick={handleClearList}>Limpar</button>
             </div>
         </form>
     );

@@ -20,10 +20,28 @@ const TaskContextProvider = (props) => {
         }
         getTasks();
     }, []);
+    
+    const addTask = async (title, description) => {
+        
+        try {
+           const {data} = await api.post('/', {
+                title,
+                description
+            });
+            setTasks([... tasks, data]);
+            
+        } catch (error) {
+            console.log('Ocorreu um erro ao adicionar um regisrto' + error);
+        }
+    }
+
+    const clearList = () => {
+        setTasks([]);
+    }
 
     return(
         <TaskContext.Provider
-            value={{ tasks }}
+            value={{ tasks, addTask, clearList }}
         >
             {props.children}
         </TaskContext.Provider>
