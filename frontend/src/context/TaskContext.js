@@ -28,7 +28,7 @@ const TaskContextProvider = (props) => {
                 title,
                 description
             });
-            setTasks([... tasks, data]);
+            setTasks([...tasks, data]);
             
         } catch (error) {
             console.log('Ocorreu um erro ao adicionar um regisrto' + error);
@@ -39,9 +39,22 @@ const TaskContextProvider = (props) => {
         setTasks([]);
     }
 
+    const removeTask = async (id) =>{
+        try {
+          await api.delete('/'+id)  
+
+          const tasksFiltered = tasks.filter( task => task.id !== id)
+
+          setTasks(tasksFiltered);
+
+        } catch (error) {
+            console.log('Ocorreu um erro ao excluir o registro'+ error.message);
+        }
+    }
+
     return(
         <TaskContext.Provider
-            value={{ tasks, addTask, clearList }}
+            value={{ tasks, addTask, clearList, removeTask }}
         >
             {props.children}
         </TaskContext.Provider>
